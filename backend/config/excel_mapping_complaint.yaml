@@ -1,0 +1,124 @@
+# Excel header mappings for complaint ticket type
+# Maps Chinese headers to form field names with fuzzy matching tolerance
+
+field_mappings:
+  # Basic fields
+  complaint_number:
+    chinese_headers: ["工单号", "投诉单号", "编号"]
+    field_type: "text"
+    required: false
+    
+  district:
+    chinese_headers: ["区县", "地区", "区域"]
+    field_type: "text"
+    required: false
+    
+  complainant_name:
+    chinese_headers: ["投诉人", "姓名", "客户姓名"]
+    field_type: "text"
+    required: true
+    
+  phone:
+    chinese_headers: ["联系电话", "电话", "手机号"]
+    field_type: "text"
+    required: false
+    
+  address:
+    chinese_headers: ["地址", "投诉地址", "详细地址"]
+    field_type: "text"
+    required: false
+    
+  complaint_type:
+    chinese_headers: ["投诉类型", "问题类型"]
+    field_type: "select"
+    options: ["信号问题", "网络故障", "服务问题", "其他"]
+    required: false
+    
+  complaint_content:
+    chinese_headers: ["投诉内容", "问题描述", "内容"]
+    field_type: "textarea"
+    required: true
+    
+  handling_status:
+    chinese_headers: ["处理状态", "状态"]
+    field_type: "select"
+    options: ["待处理", "处理中", "已完成", "已取消"]
+    required: false
+
+# Test results matrix - array field with multiple columns
+test_results:
+  array_headers:
+    pci:
+      chinese_headers: ["PCI", "物理小区标识"]
+      field_type: "number"
+      
+    frequency:
+      chinese_headers: ["频点", "频率", "freq"]
+      field_type: "number"
+      
+    cell_id:
+      chinese_headers: ["小区ID", "CellID", "cell_id"]
+      field_type: "text"
+      
+    rsrp:
+      chinese_headers: ["RSRP", "参考信号接收功率"]
+      field_type: "number"
+      unit: "dBm"
+      
+    sinr:
+      chinese_headers: ["SINR", "信号与干扰加噪声比"]
+      field_type: "number"
+      unit: "dB"
+      
+    uplink_rate:
+      chinese_headers: ["上传速率", "上行速率", "上传速度"]
+      field_type: "number"
+      unit: "Mbps"
+      
+    downlink_rate:
+      chinese_headers: ["下载速率", "下行速率", "下载速度"]
+      field_type: "number"
+      unit: "Mbps"
+      
+    interference_level:
+      chinese_headers: ["干扰水平", "干扰程度"]
+      field_type: "select"
+      options: ["低", "中", "高"]
+      
+    notes:
+      chinese_headers: ["备注", "说明", "注释"]
+      field_type: "textarea"
+
+# OCR keyword mappings for automatic field population
+ocr_keywords:
+  complaint_number:
+    keywords: ["工单号", "投诉单号"]
+    regex: "\\d{8,}"
+    
+  district:
+    keywords: ["区县", "地区"]
+    regex: "[\\u4e00-\\u9fa5]+区|[\\u4e00-\\u9fa5]+县"
+    
+  pci:
+    keywords: ["PCI"]
+    regex: "\\d{1,4}"
+    
+  sinr:
+    keywords: ["SINR"]
+    regex: "-?\\d+(\\.\\d+)?"
+    
+  uplink_rate:
+    keywords: ["上传速率", "上行速率"]
+    regex: "\\d+(\\.\\d+)?\\s*(Mbps|mbps)?"
+    
+  downlink_rate:
+    keywords: ["下载速率", "下行速率"]
+    regex: "\\d+(\\.\\d+)?\\s*(Mbps|mbps)?"
+
+# Import settings
+import_settings:
+  skip_empty_rows: true
+  fuzzy_match_threshold: 0.8  # Similarity threshold for header matching
+  max_rows: 10000
+  matrix_start_keywords: ["测试结果", "测试数据", "网络测试"]
+  matrix_end_keywords: ["总计", "合计", "备注"]
