@@ -43,9 +43,9 @@ class OCRResult(Base):
     id = Column(Integer, primary_key=True, index=True)
     image_id = Column(Integer, ForeignKey("images.id"), nullable=False)
     text_data = Column(JSON, nullable=False, default={})  # Extracted text with positions
-    confidence = Column(JSON, nullable=False, default=0.0)  # Overall confidence
+    confidence = Column(Integer, nullable=False, default=0)  # Overall confidence
     bbox_data = Column(JSON, nullable=True, default={})  # Bounding box information
-    processing_time = Column(JSON, nullable=True)  # Time taken for OCR
+    processing_time = Column(Integer, nullable=True)  # Time taken for OCR
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     # Relationships

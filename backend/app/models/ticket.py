@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, Text, ForeignKey, JSON, Enum
+from sqlalchemy import Column, Integer, String, DateTime, Text, ForeignKey, JSON, Enum, Boolean
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from app.core.database import Base
@@ -18,7 +18,7 @@ class TicketType(Base):
     name = Column(String(100), unique=True, index=True, nullable=False)
     description = Column(Text, nullable=True)
     schema_config = Column(JSON, nullable=False, default={})  # Configuration for dynamic form
-    is_active = Column(JSON, default=True)
+    is_active = Column(Boolean, default=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 
@@ -36,7 +36,7 @@ class FormField(Base):
     field_label = Column(String(255), nullable=False)
     config = Column(JSON, nullable=False, default={})  # Field-specific configuration
     order_index = Column(Integer, nullable=False, default=0)
-    is_required = Column(JSON, default=False)
+    is_required = Column(Boolean, default=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     # Relationships

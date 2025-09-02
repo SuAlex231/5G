@@ -1,0 +1,47 @@
+# Excel mapping configuration for complaint ticket type
+field_mappings:
+  # Basic field mappings
+  工单号: "ticket_number"
+  区县: "district"
+  问题描述: "problem_description"
+  位置: "location"
+  联系人: "contact_person"
+  联系电话: "contact_phone"
+  
+  # Test results matrix mappings
+  PCI: "test_results.0.pci"
+  频率: "test_results.0.frequency"
+  小区ID: "test_results.0.cell_id"
+  RSRP: "test_results.0.rsrp"
+  SINR: "test_results.0.sinr"
+  上传速率: "test_results.0.upload_speed"
+  下载速率: "test_results.0.download_speed"
+  干扰: "test_results.0.interference"
+  备注: "test_results.0.notes"
+
+# Fuzzy matching configuration
+fuzzy_match:
+  threshold: 0.8  # Similarity threshold for header matching
+  
+# Validation rules
+validation_rules:
+  required_fields:
+    - "工单号"
+    - "区县"
+    - "问题描述"
+    - "联系人"
+    - "联系电话"
+  
+  field_types:
+    工单号: "string"
+    区县: "string"
+    问题描述: "string"
+    位置: "string"
+    联系人: "string"
+    联系电话: "string"
+    PCI: "number"
+    频率: "number"
+    RSRP: "number"
+    SINR: "number"
+    上传速率: "number"
+    下载速率: "number"
