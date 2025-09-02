@@ -1,0 +1,10 @@
+# OCR Service Dependencies
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+paddlepaddle==2.5.2
+paddleocr==2.7.3
+pillow==10.1.0
+httpx==0.25.2
+pydantic==2.5.0
+python-multipart==0.0.6
+minio==7.2.0
