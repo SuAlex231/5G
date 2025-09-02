@@ -1,8 +1,12 @@
 from sqlmodel import SQLModel, Field, Relationship
-from typing import Optional, List, Dict, Any
+from typing import Optional, List, Dict, Any, TYPE_CHECKING
 from datetime import datetime
 from enum import Enum
 import uuid
+from sqlalchemy import Column, String, JSON
+
+if TYPE_CHECKING:
+    from sqlalchemy.orm import RelationshipProperty
 
 
 class RoleEnum(str, Enum):
@@ -38,7 +42,6 @@ class User(SQLModel, table=True):
     
     # Relationships
     role_assignments: List["RoleAssignment"] = Relationship(back_populates="user")
-    created_tickets: List["Ticket"] = Relationship(back_populates="created_by")
 
 
 class RoleAssignment(SQLModel, table=True):
@@ -76,7 +79,7 @@ class FormField(SQLModel, table=True):
     field_name: str
     field_label: str
     field_type: str  # text, number, date, select, textarea, array
-    field_options: Optional[Dict[str, Any]] = Field(default=None, sa_column_kwargs={"type_": "JSONB"})
+    field_options: Optional[Dict[str, Any]] = Field(default=None, sa_column=Column(JSON))
     is_required: bool = Field(default=False)
     display_order: int = Field(default=0)
     created_at: datetime = Field(default_factory=datetime.utcnow)
@@ -95,8 +98,8 @@ class Ticket(SQLModel, table=True):
     status: str = Field(default="draft")  # draft, submitted, processing, completed, cancelled
     priority: str = Field(default="normal")  # low, normal, high, urgent
     
-    # Dynamic form data stored as JSONB
-    form_data: Dict[str, Any] = Field(default={}, sa_column_kwargs={"type_": "JSONB"})
+    # Dynamic form data stored as JSON
+    form_data: Dict[str, Any] = Field(default={}, sa_column=Column(JSON))
     
     # Metadata
     created_by_id: int = Field(foreign_key="users.id")
@@ -106,7 +109,6 @@ class Ticket(SQLModel, table=True):
     
     # Relationships
     ticket_type: TicketType = Relationship(back_populates="tickets")
-    created_by: User = Relationship(back_populates="created_tickets")
     images: List["Image"] = Relationship(back_populates="ticket")
     attachments: List["Attachment"] = Relationship(back_populates="ticket")
     audit_logs: List["AuditLog"] = Relationship(back_populates="ticket")
@@ -153,7 +155,7 @@ class OCRResult(SQLModel, table=True):
     image_id: int = Field(foreign_key="images.id")
     text_content: str
     confidence: float
-    bbox_data: Optional[Dict[str, Any]] = Field(default=None, sa_column_kwargs={"type_": "JSONB"})
+    bbox_data: Optional[Dict[str, Any]] = Field(default=None, sa_column=Column(JSON))
     processed_at: datetime = Field(default_factory=datetime.utcnow)
     
     # Relationships
@@ -167,7 +169,7 @@ class Job(SQLModel, table=True):
     job_id: str = Field(unique=True, index=True)
     job_type: str  # import, export, ocr
     status: str = Field(default="pending")  # pending, running, completed, failed
-    result: Optional[Dict[str, Any]] = Field(default=None, sa_column_kwargs={"type_": "JSONB"})
+    result: Optional[Dict[str, Any]] = Field(default=None, sa_column=Column(JSON))
     error_message: Optional[str] = None
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
@@ -181,8 +183,8 @@ class AuditLog(SQLModel, table=True):
     user_id: int = Field(foreign_key="users.id")
     action: str
     description: str
-    old_values: Optional[Dict[str, Any]] = Field(default=None, sa_column_kwargs={"type_": "JSONB"})
-    new_values: Optional[Dict[str, Any]] = Field(default=None, sa_column_kwargs={"type_": "JSONB"})
+    old_values: Optional[Dict[str, Any]] = Field(default=None, sa_column=Column(JSON))
+    new_values: Optional[Dict[str, Any]] = Field(default=None, sa_column=Column(JSON))
     timestamp: datetime = Field(default_factory=datetime.utcnow)
     
     # Relationships

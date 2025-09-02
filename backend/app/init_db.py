@@ -152,6 +152,11 @@ def init_database():
     """Initialize database with default data."""
     print("Initializing database...")
     
+    # Create tables first
+    from app.core.database import create_db_and_tables
+    create_db_and_tables()
+    print("Database tables created!")
+    
     with Session(engine) as session:
         print("Creating roles...")
         init_roles(session)

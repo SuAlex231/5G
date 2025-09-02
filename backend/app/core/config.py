@@ -4,13 +4,13 @@ from typing import List
 
 class Settings(BaseSettings):
     # Database
-    DATABASE_URL: str = "postgresql://postgres:postgres@postgres:5432/ticketing_db"
+    DATABASE_URL: str = "postgresql://postgres:postgres@localhost:5432/ticketing_db"
     
     # Redis
-    REDIS_URL: str = "redis://redis:6379/0"
+    REDIS_URL: str = "redis://localhost:6379/0"
     
     # MinIO
-    MINIO_ENDPOINT: str = "http://minio:9000"
+    MINIO_ENDPOINT: str = "http://localhost:9000"
     MINIO_ACCESS_KEY: str = "minio"
     MINIO_SECRET_KEY: str = "minio123"
     MINIO_BUCKET_UPLOADS: str = "uploads"
